@@ -2,12 +2,52 @@
 from tkinter import *
 from tkinter import ttk #-> Para uso das grids
 import sqlite3          #-> Definindo o driver do database
+#-> Reportlab e suas bibliotacas serão necessárias para geração de PDF
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter, A4
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.platypus import SimpleDocTemplate, Image
+import webbrowser #-> Chama o navegador padrão
 
 
 # Declarando frames -------------------------------------------------
 root = Tk()
 
 # Declarando classes ------------------------------------------------
+class Relatorios(): #-> destinada a geração dos relatórios
+     def printCliente(self):         #-> Função criar e exibir o arquivo
+          webbrowser.open("cliente.pdf") #-> será gerado o relatório da pasta do sistema ou caminho definido
+     def geraRelatorioCliente(self): #-> Função constroi o PDF - que será chamada pela printCliente()
+          #-> criando as variáveis para o relatório
+          self.c = canvas.Canvas("cliente.pdf")
+          self.codigoRel = self.codigo_entry.get()
+          self.nomeRel = self.nome_entry.get()
+          self.telefoneRel = self.telefone_entry.get()
+          self.cidadeRel = self.cidade_entry.get()
+          #-> cabeçalho do relatório
+          self.c.setFont("Helvetica-Bold", 24) #-> mais fontes pesquisar doc do Reportlab que usa suas próprias fonte
+          self.c.drawString(200, 790, 'Ficha do Cliente')
+          #-> corpo do relatório
+          self.c.setFont("Helvetica-Bold", 16)
+          self.c.drawString(50, 710, 'Codigo: ')
+          self.c.drawString(50, 678, 'Nome: ')
+          self.c.drawString(50, 638, 'Telefone: ')         
+          self.c.drawString(50, 600, 'Cidade: ')
+
+          self.c.setFont("Helvetica", 16)
+          self.c.drawString(150, 710, 'Codigo: ' + self.codigoRel)
+          self.c.drawString(150, 678, 'Nome: ' + self.nomeRel)
+          self.c.drawString(150, 638, 'Telefone: ' + self.telefoneRel)         
+          self.c.drawString(150, 600, 'Cidade: ' + self.cidadeRel)
+
+          self.c.rect(20, 750, 550, 70, fill=False, stroke=True)
+
+
+          self.c.showPage()
+          self.c.save()
+          self.printCliente()
+
 class Funcs(): #-> não precisa do __init__ já que esta função não cria, será chamada pela Application()
      def limpa_tela(self):     #-> Função limpar dados dos objetos de entrada
           self.codigo_entry.delete(0, END)
@@ -91,9 +131,7 @@ class Funcs(): #-> não precisa do __init__ já que esta função não cria, ser
         self.select_lista()
         self.limpa_tela()
 
-
-
-class Application(Funcs): #-> note que esta classe pode usar a class Funcs
+class Application(Funcs, Relatorios): #-> note que esta classe pode usar a class Funcs
     #-> Ativando LOOP do código
     def __init__(self):       #-> ATENÇÃO na ordenação das chamadas, deve seguir as prioridade das funções
         self.root = root #-> Criando uma equivalência pois o 'root' está fora da class.
@@ -195,12 +233,12 @@ class Application(Funcs): #-> note que esta classe pode usar a class Funcs
          def Quit(): self.root.destroy()
 
          menubar.add_cascade(label="Opções", menu= filemenu)
-         menubar.add_cascade(label="Sobre", menu= filemenu2)
+         menubar.add_cascade(label="Relatórios", menu= filemenu2)
 
          filemenu.add_command(label="Limpa Cliente", command=self.limpa_tela)
          filemenu.add_command(label="Sair", command=Quit)
 
-
+         filemenu2.add_command(label="Ficha do Cliente", command=self.geraRelatorioCliente)
 
 # Retorno LOOP do código --------------------------------------------
 Application()
