@@ -1,4 +1,4 @@
-# Vinculando recursos ao projeto ------------------------------------
+# Vinculando recursos ao projeto -----------------------------------
 from tkinter import *
 from tkinter import ttk #-> Para uso das grids
 
