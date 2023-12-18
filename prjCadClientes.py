@@ -130,6 +130,19 @@ class Funcs(): #-> não precisa do __init__ já que esta função não cria, ser
         self.desconecta_bd()
         self.select_lista()
         self.limpa_tela()
+     def busca_cliente(self):  #-> Função buscar registro de cliente
+          self.conecta_bd()
+          self.listacli.delete(*self.listacli.get_children())
+          self.nome_entry.insert(END, '%')
+          nome = self.nome_entry.get()
+          self.cursor.execute(""" SELECT cod, nome_cliente, telefone, cidade FROM clientes 
+                              WHERE nome_cliente LIKE '%s' ORDER BY nome_cliente ASC """ % nome)
+          #-- para bancos MySQL talves seja necessário assim LIKE %s ORDER BY nome_cliente ASC """ % [nome])
+          buscanomeCli = self.cursor.fetchall()
+          for i in buscanomeCli:
+               self.listacli.insert("", END, values=i)
+          self.limpa_tela()
+          self.desconecta_bd()
 
 class Application(Funcs, Relatorios): #-> note que esta classe pode usar a class Funcs
     #-> Ativando LOOP do código
@@ -165,7 +178,8 @@ class Application(Funcs, Relatorios): #-> note que esta classe pode usar a class
                                     , font=('verdana', 8, 'bold'), command=self.limpa_tela) #-> DarkSlateBlue 
             self.bt_limpar.place(relx=0.2, rely=0.1, relwidth=0.1, relheight=0.15)
             # Criação do botão buscar
-            self.bt_buscar= Button(self.frame_1, text="Buscar", bd=3, bg='#483D8B', fg='white', font=('verdana', 8, 'bold'))
+            self.bt_buscar= Button(self.frame_1, text="Buscar", bd=3, bg='#483D8B', fg='white'
+                                   , font=('verdana', 8, 'bold'), command=self.busca_cliente)
             self.bt_buscar.place(relx=0.3, rely=0.1, relwidth=0.1, relheight=0.15)
             # Criação do botão Novo
             self.bt_novo= Button(self.frame_1, text="Novo", bd=3, bg='#483D8B', fg='white'
