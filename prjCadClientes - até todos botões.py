@@ -9,7 +9,6 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import SimpleDocTemplate, Image
 import webbrowser #-> Chama o navegador padrão
-from PIL import ImageTk, Image #-> Necessário para implementar imagens nos botões
 
 
 # Declarando frames -------------------------------------------------
@@ -188,16 +187,9 @@ class Application(Funcs, Relatorios): #-> note que esta classe pode usar a class
                                    , font=('verdana', 8, 'bold'), command=self.busca_cliente)
             self.bt_buscar.place(relx=0.3, rely=0.1, relwidth=0.1, relheight=0.15)
             # Criação do botão Novo
-            #-> imagem para o batão novo
-            self.imgNovo = PhotoImage(file="img_insert.png")
-            self.imgNovo = self.imgNovo.subsample(2, 2) # Não é uma instrução obrigatótia, mas facilita ajustar uma imagem
-            self.style = ttk.Style() # cirando um estilo
-            self.style.configure("BW.TButton", relwidth=1, relheight=1, foreground="gray", borderwidth=0,
-                                 bordercolor='gray', background='blue', image=self.imgNovo)
-            #--text="Novo", bd=3, bg='#483D8B', fg='white', font=('verdana', 8, 'bold')
-            self.bt_novo= ttk.Button(self.frame_1, style="BW.TButton", command=self.add_cliente) # necessário chamar 'ttk' por conta da imagem
+            self.bt_novo= Button(self.frame_1, text="Novo", bd=3, bg='#483D8B', fg='white'
+                                 , font=('verdana', 8, 'bold'), command=self.add_cliente)
             self.bt_novo.place(relx=0.6, rely=0.1, relwidth=0.1, relheight=0.15)
-            self.bt_novo.config(image=self.imgNovo)
             # Criação do botão Alterar
             self.bt_alterar= Button(self.frame_1, text="Alterar", bd=3, bg='#483D8B', fg='white'
                                     , font=('verdana', 8, 'bold'), command=self.altera_cliente)
