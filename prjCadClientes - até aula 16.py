@@ -189,7 +189,7 @@ class Application(Funcs, Relatorios): #-> note que esta classe pode usar a class
             self.bt_buscar.place(relx=0.3, rely=0.1, relwidth=0.1, relheight=0.15)
             # Criação do botão Novo
             #-> imagem para o batão novo
-            self.imgNovo = PhotoImage(file="img_insert.gif")
+            self.imgNovo = PhotoImage(file="img_insert.png")
             self.imgNovo = self.imgNovo.subsample(2, 2) # Não é uma instrução obrigatótia, mas facilita ajustar uma imagem
             self.style = ttk.Style() # cirando um estilo
             self.style.configure("BW.TButton", relwidth=1, relheight=1, foreground="gray", borderwidth=0,
@@ -203,15 +203,9 @@ class Application(Funcs, Relatorios): #-> note que esta classe pode usar a class
                                     , font=('verdana', 8, 'bold'), command=self.altera_cliente)
             self.bt_alterar.place(relx=0.7, rely=0.1, relwidth=0.1, relheight=0.15)
             # Criação do botão Apagar
-            self.imgApagar = PhotoImage(file="img_delete.gif")
-            self.imgApagar = self.imgApagar.subsample(2, 2) # Não é uma instrução obrigatótia, mas facilita ajustar uma imagem            
-            self.style = ttk.Style() # cirando um estilo
-            self.style.configure("BW.TButton", relwidth=1, relheight=1, foreground="gray", borderwidth=0,
-                                 bordercolor='gray', background='blue', image=self.imgApagar)
-            #self.bt_apagar= Button(self.frame_1, text="Apagar", bd=3, bg='#483D8B', fg='white', font=('verdana', 8, 'bold'), command=self.deleta_cliente)
-            self.bt_apagar= ttk.Button(self.frame_1, style="BW.TButton", command=self.deleta_cliente)
+            self.bt_apagar= Button(self.frame_1, text="Apagar", bd=3, bg='#483D8B', fg='white'
+                                   , font=('verdana', 8, 'bold'), command=self.deleta_cliente)
             self.bt_apagar.place(relx=0.8, rely=0.1, relwidth=0.1, relheight=0.15)
-            self.bt_apagar.config(image=self.imgApagar)
 
             #-> Criação das labels e entradas do código
             self.lb_codigo = Label(self.frame_1, text="Código", bg='#4682B4', fg='black')
